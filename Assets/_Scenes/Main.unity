@@ -187,7 +187,7 @@ GameObject:
   - 54: {fileID: 732239680}
   - 114: {fileID: 732239679}
   - 114: {fileID: 732239678}
-  - 114: {fileID: 732239676}
+  - 114: {fileID: 732239681}
   m_Layer: 0
   m_Name: Entity
   m_TagString: Untagged
@@ -195,19 +195,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &732239676
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 732239675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7ab99b4f5c718c4face4fd555cbd451, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StateMachine: {fileID: 732239679}
-  _afterWaitBehaviour: {fileID: 732239678}
 --- !u!4 &732239677
 Transform:
   m_ObjectHideFlags: 0
@@ -227,13 +214,13 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 732239675}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f985097dfde109e42ac7caad08e633cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   StateMachine: {fileID: 732239679}
-  _afterJumpState: {fileID: 732239676}
+  _afterJumpState: {fileID: 732239681}
 --- !u!114 &732239679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,11 +232,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd4d1725dec06d441bfb125ea723c5fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartingState: {fileID: 732239676}
+  StartingState: {fileID: 732239678}
   States:
   - {fileID: 732239678}
-  - {fileID: 732239676}
-  _currentState: {fileID: 732239676}
+  - {fileID: 732239681}
+  CurrentState: {fileID: 732239678}
 --- !u!54 &732239680
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -265,6 +252,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &732239681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 732239675}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7ab99b4f5c718c4face4fd555cbd451, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StateMachine: {fileID: 732239679}
+  _afterWaitBehaviour: {fileID: 732239678}
 --- !u!1 &821554971
 GameObject:
   m_ObjectHideFlags: 0

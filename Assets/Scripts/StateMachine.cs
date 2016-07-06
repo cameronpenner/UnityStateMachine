@@ -14,7 +14,7 @@ public class StateMachine : MonoBehaviour
 	public State[] States;
 
 	[Tooltip("Our current state")]
-	public State _currentState;
+	public State CurrentState;
 
 	//disables the current state, and activatese the new one
 	public void SetState(State newState)
@@ -26,14 +26,14 @@ public class StateMachine : MonoBehaviour
 		}
 
 		//disable the current state
-		if(_currentState != null)
+		if(CurrentState != null)
 		{
-			_currentState.enabled = false;
+			CurrentState.enabled = false;
 		}
 
 		//start our new state
 		newState.enabled = true;
-		_currentState = newState;
+		CurrentState = newState;
 	}
 }
 
@@ -50,6 +50,7 @@ public class StateMachineEditor : Editor
 
 	private void OnEnable()
 	{
+		//get a reference to our StateMachine component
 		stateMachine = (StateMachine)target;
 
 		UpdateReferences();
@@ -57,43 +58,64 @@ public class StateMachineEditor : Editor
 
 	public override void OnInspectorGUI()
 	{
-		//grab the base component
-		StateMachine stateMachine = (StateMachine)target;
-
-		//draw the transform object field
-		EditorGUI.BeginChangeCheck();
-		stateMachine.StartingState = (State)EditorGUILayout.ObjectField("Starting State", stateMachine.StartingState, typeof(State));
-
-		//if the reference changed
-		if(EditorGUI.EndChangeCheck())
+		if(Application.isPlaying)
 		{
-			//update our references
-			UpdateReferences();
-			EditorUtility.SetDirty(stateMachine);
+			EditorGUILayout.LabelField("SwitchStates", EditorStyles.boldLabel);
+
+			//make a list of buttons to use for switching states
+			foreach(var state in stateMachine.States)
+			{
+				if(GUILayout.Button(state.GetType().Name))
+				{
+					//set as our new state
+					stateMachine.SetState(state);
+				}
+			}
+		}
+		else
+		{
+			EditorGUILayout.LabelField("Set Starting State", EditorStyles.boldLabel);
+
+			//make a list of buttons to select our starting state
+			foreach(var state in stateMachine.States)
+			{
+				if(GUILayout.Button(state.GetType().Name))
+				{
+					//set our starting state and update references
+					stateMachine.StartingState = state;
+					UpdateReferences();
+				}
+			}
 		}
 	}
 
-	//updates the
+	//updates the state and statemachine references
 	private void UpdateReferences()
 	{
+		//get list of all states in our object
 		stateMachine.States = stateMachine.GetComponents<State>();
 
+		//if we have no states selected...
 		if(stateMachine.StartingState == null && stateMachine.States.Length > 0)
 		{
+			//...select the first state
 			stateMachine.StartingState = stateMachine.States[0];
 		}
 
+		//for every state
 		foreach(var state in stateMachine.States)
 		{
+			//if it's the starting state
 			if(state == stateMachine.StartingState)
 			{
 				state.enabled = true;
-				stateMachine._currentState = state;
 			}
-			else
+			else //it's not that starting state
 			{
 				state.enabled = false;
 			}
+
+			//make sure it has a reference to the state machine
 			state.StateMachine = stateMachine;
 		}
 	}
