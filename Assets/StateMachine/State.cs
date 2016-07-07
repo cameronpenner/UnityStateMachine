@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Reflection;
+using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -33,6 +34,9 @@ public class StateEditor : Editor
 		//get a reference to our State component
 		state = (State)target;
 		isEnabled = state.enabled;
+
+		//set the script's icon
+		SetIcon();
 	}
 
 	//keeps track of current enabled status
@@ -61,5 +65,17 @@ public class StateEditor : Editor
 
 		//draw childrens inspectors
 		DrawDefaultInspector();
+	}
+
+	private void SetIcon()
+	{
+		//load the image from resources
+		Texture2D icon = (Texture2D)Resources.Load("State");
+
+		//set script icon through reflection
+		var editorGUIUtilityType = typeof(EditorGUIUtility);
+		var bindingFlags = BindingFlags.InvokeMethod | BindingFlags.Static | BindingFlags.NonPublic;
+		var args = new object[] { state, icon };
+		editorGUIUtilityType.InvokeMember("SetIconForObject", bindingFlags, null, null, args);
 	}
 }

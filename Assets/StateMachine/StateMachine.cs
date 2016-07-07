@@ -31,7 +31,7 @@ public class StateMachine : MonoBehaviour
 		CurrentState = newState;
 	}
 
-	//updates the state and statemachine references
+	//updates the state and statemachine references, make sure there's exactly one active state
 	public void UpdateReferences()
 	{
 		//get list of all states in our object
@@ -63,7 +63,7 @@ public class StateMachine : MonoBehaviour
 
 /// <summary>
 /// The StateMachineEditor class manages the state machine inside the inspector,
-/// Making sure the states have proper references and only the starting state is enabled
+/// Making sure the states have proper references exactly one state is enabled
 /// </summary>
 [CustomEditor(typeof(StateMachine))]
 [CanEditMultipleObjects]

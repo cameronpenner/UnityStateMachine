@@ -5,7 +5,7 @@ public class GrowingState : State //notice we're inheriting from State
 {
 	//you can get references to other states, so you can switch to them
 	[SerializeField]
-	private State _afterWaitBehaviour;
+	private State _afterGrowState;
 
 	//OnDisable works as normal, it also gets called whenever a state exits
 	private void OnDisable()
@@ -20,12 +20,12 @@ public class GrowingState : State //notice we're inheriting from State
 
 		if(Input.GetKeyDown(KeyCode.Space))
 		{
-			SetState(_afterWaitBehaviour);
+			SetState(_afterGrowState);
 		}
 
 		if(transform.localScale.x > 5)
 		{
-			SetState(_afterWaitBehaviour);
+			SetState(_afterGrowState);
 		}
 	}
 }

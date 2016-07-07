@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StateMachine: {fileID: 732239679}
-  _afterWaitBehaviour: {fileID: 732239678}
+  _afterGrowState: {fileID: 732239678}
 --- !u!1 &821554971
 GameObject:
   m_ObjectHideFlags: 0
