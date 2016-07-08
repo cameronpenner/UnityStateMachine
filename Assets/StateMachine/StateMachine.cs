@@ -97,6 +97,9 @@ public class StateMachineEditor : Editor
 					stateMachine.UpdateReferences();
 				}
 			}
+
+			//make sure it has a reference to the state machine
+			state.StateMachine = stateMachine;
 		}
 	}
 }
