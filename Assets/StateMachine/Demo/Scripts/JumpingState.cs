@@ -1,11 +1,11 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-public class JumpingState : State //notice we're inheriting from State
+public class JumpingState : StateBehaviour //notice we're inheriting from State
 {
 	//you can get references to other states, so you can switch to them
 	[SerializeField]
-	private State _afterJumpState;
+	private StateBehaviour _afterJumpState;
 
 	private Rigidbody _rb;
 

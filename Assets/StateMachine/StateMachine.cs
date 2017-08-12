@@ -1,5 +1,10 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
+
+#if UNITY_EDITOR
+
+using UnityEditor;
+
+#endif
 
 /// <summary>
 /// The StateMachine handles state switching logic
@@ -7,12 +12,12 @@ using UnityEngine;
 /// </summary>
 public class StateMachine : MonoBehaviour
 {
-	public State[] States;
+	public StateBehaviour[] States;
 
-	public State CurrentState;
+	public StateBehaviour CurrentState;
 
 	//disables the current state, and activatese the new one
-	public void SetState(State newState)
+	public void SetState(StateBehaviour newState)
 	{
 		//make sure the new state is valid
 		if(newState == null)
@@ -35,7 +40,7 @@ public class StateMachine : MonoBehaviour
 	public void UpdateReferences()
 	{
 		//get list of all states in our object
-		States = GetComponents<State>();
+		States = GetComponents<StateBehaviour>();
 
 		//if we have no states selected...
 		if(CurrentState == null && States.Length > 0)
@@ -50,16 +55,17 @@ public class StateMachine : MonoBehaviour
 			//if it's the starting state
 			if(state == CurrentState)
 			{
-				CurrentState = state;
-				state.enabled = true;
+				if(!state.enabled) state.enabled = true;
 			}
 			else //it's not that starting state
 			{
-				state.enabled = false;
+				if(state.enabled) state.enabled = false;
 			}
 		}
 	}
 }
+
+#if UNITY_EDITOR
 
 /// <summary>
 /// The StateMachineEditor class manages the state machine inside the inspector,
@@ -97,9 +103,8 @@ public class StateMachineEditor : Editor
 					stateMachine.UpdateReferences();
 				}
 			}
-
-			//make sure it has a reference to the state machine
-			state.StateMachine = stateMachine;
 		}
 	}
 }
+
+#endif

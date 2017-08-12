@@ -1,38 +1,60 @@
 ﻿using System.Reflection;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+
+using UnityEditor;
+
+#endif
 
 /// <summary>
 /// Inherit from State to use components in the state machine
 /// </summary>
 [RequireComponent(typeof(StateMachine))]
-public class State : MonoBehaviour
+public class StateBehaviour : MonoBehaviour
 {
 	//All states have a reference to the StateMachine
-	[HideInInspector]
-	public StateMachine StateMachine;
+	//[HideInInspector]
+	public StateMachine StateMachine { get; set; }
 
 	//Use SetState from any State class to switch states
-	protected void SetState(State state)
+	public void SetState(StateBehaviour state)
 	{
+		if(StateMachine == null)
+		{
+			StateMachine = GetComponent<StateMachine>();
+		}
+
 		StateMachine.SetState(state);
 	}
+
+	//private void OnEnable()
+	//{
+	//	Debug.Log("Enabled");
+	//}
+
+	//private void OnDisable()
+	//{
+	//	Debug.Log("Disabled");
+	//}
 }
+
+#if UNITY_EDITOR
 
 /// <summary>
 /// Handles State's GUI, makes sure only one is active at a time
 /// </summary>
-[CustomEditor(typeof(State), true)]
+[CustomEditor(typeof(StateBehaviour), true)]
 [CanEditMultipleObjects]
 public class StateEditor : Editor
 {
 	//reference to the component
-	private State state;
+	private StateBehaviour state;
 
 	private void OnEnable()
 	{
 		//get a reference to our State component
-		state = (State)target;
+		state = (StateBehaviour)target;
 		isEnabled = state.enabled;
 
 		//set the script's icon
@@ -45,25 +67,28 @@ public class StateEditor : Editor
 	public override void OnInspectorGUI()
 	{
 		//get a reference to our State component
-		state = (State)target;
+		state = (StateBehaviour)target;
 
 		//if state changed
 		if(state.enabled != isEnabled)
 		{
+			if(state.StateMachine == null)
+			{
+				state.StateMachine = state.GetComponent<StateMachine>();
+			}
+
 			//something changed, we will now update the lastMode
 			isEnabled = state.enabled;
 
-			//if the state was enabled
 			if(state.enabled)
 			{
 				state.StateMachine.CurrentState = state;
 			}
 
-			//update all the other states, to make sure we always have exactly 1 running state
 			state.StateMachine.UpdateReferences();
 		}
 
-		//draw childrens inspectors
+		//draw children's inspectors
 		DrawDefaultInspector();
 	}
 
@@ -79,3 +104,5 @@ public class StateEditor : Editor
 		editorGUIUtilityType.InvokeMember("SetIconForObject", bindingFlags, null, null, args);
 	}
 }
+
+#endif

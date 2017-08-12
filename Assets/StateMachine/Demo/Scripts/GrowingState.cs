@@ -1,11 +1,11 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-public class GrowingState : State //notice we're inheriting from State
+public class GrowingState : StateBehaviour //notice we're inheriting from State
 {
 	//you can get references to other states, so you can switch to them
 	[SerializeField]
-	private State _afterGrowState;
+	private StateBehaviour _afterGrowState;
 
 	//OnDisable works as normal, it also gets called whenever a state exits
 	private void OnDisable()
